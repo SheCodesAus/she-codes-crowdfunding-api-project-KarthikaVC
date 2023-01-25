@@ -48,9 +48,7 @@ class CustomUserDetail(APIView):
 class RegisterUserAPIView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
-    print("In register API View - 1")
     permission_classes =(AllowAny, )
-    print("In register API View - 2")
     
 
     # @api_view(['POST',])
