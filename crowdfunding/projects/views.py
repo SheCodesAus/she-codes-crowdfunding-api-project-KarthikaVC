@@ -71,7 +71,6 @@ class DeleteProject(generics.RetrieveUpdateDestroyAPIView):
     def destroy(self, request, *args, **kwargs):
         try:
             instance = self.get_object()
-            print(f"Instance of project {instance}")
             self.perform_destroy(instance)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Project.DoesNotExist:
