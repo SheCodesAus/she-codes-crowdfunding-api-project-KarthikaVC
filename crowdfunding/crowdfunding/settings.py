@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG','False') !='False'
 
-ALLOWED_HOSTS = ['patient-sun-1454.fly.dev']
+ALLOWED_HOSTS = ['patient-sun-1454.fly.dev','127.0.0.1', 'localhost']
 CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = ['https://*.fly.dev']
 

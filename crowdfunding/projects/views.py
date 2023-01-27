@@ -38,6 +38,7 @@ class ProjectDetail(APIView):
     def get_object(self, pk):
         try:
             project = Project.objects.get(pk=pk)
+            print(f"printing the pledge total amount :  {project.total} ")
             self.check_object_permissions(self.request, project)
             return project
         except Project.DoesNotExist:
@@ -61,6 +62,20 @@ class ProjectDetail(APIView):
             return Response(serializer.data)
         return Response(serializer.errors)
 
+class DeleteProject(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectDetailSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
+
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            print(f"Instance of project {instance}")
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Project.DoesNotExist:
+            raise Http404
 
 class PledgeList(generics.ListCreateAPIView):
     queryset = Pledge.objects.all()
@@ -68,4 +83,38 @@ class PledgeList(generics.ListCreateAPIView):
 
 
     def perform_create(self,serializer):
-        serializer.save(supporter=self.request.user)
+        serializer.save(supporter=self.request.user)        
+
+class PledgeDetail(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
+
+    def get_object(self, pk):
+        try:
+            pledge =Pledge.objects.get(pk=pk)
+            self.check_object_permissions(self.request, pledge)
+            return pledge
+        except Pledge.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        pledge = self.get_object(pk)
+        serializer = PledgeSerializer(pledge)
+        return Response(serializer.data)
+
+class UpdatePledge(generics.UpdateAPIView):
+    queryset = Pledge.objects.all()
+    serializer_class = PledgeSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class DeletePledge(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Pledge.objects.all()
+    serializer_class = PledgeSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Pledge.DoesNotExist:
+            raise Http404

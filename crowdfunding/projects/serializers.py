@@ -8,6 +8,15 @@ class PledgeSerializer(serializers.ModelSerializer):
         fields = ['id', 'amount', 'comment', 'anonymous', 'project', 'supporter']
         read_only_fields = ['id', 'supporter']
 
+    def update(self, instance, validated_data):
+        instance.amount = validated_data.get('amount', instance.amount)
+        instance.comment = validated_data.get('comment', instance.comment)
+        instance.anonymous = validated_data.get('anonymous', instance.anonymous)
+        instance.project = validated_data.get('project', instance.project)
+        instance.supporter = validated_data.get('supporter', instance.supporter)
+        instance.save()
+        return instance
+
 class ProjectSerializer(serializers.Serializer):
     id = serializers.ReadOnlyField()
     title = serializers.CharField(max_length=200)

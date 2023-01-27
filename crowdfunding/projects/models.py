@@ -13,6 +13,10 @@ class Project(models.Model):
     date_created = models.DateTimeField()
     owner = models.ForeignKey(User,on_delete=models.CASCADE,related_name='owner_projects')
 
+    @property
+    def total(self):
+        return self.pledges.aggregate(sum=models.Sum('amount'))['sum']
+
 class Pledge(models.Model):
 	amount = models.IntegerField()
 	comment = models.CharField(max_length=200)
