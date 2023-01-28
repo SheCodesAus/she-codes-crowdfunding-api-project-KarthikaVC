@@ -28,6 +28,7 @@ class ProjectSerializer(serializers.Serializer):
     # owner = serializers.CharField(max_length=200)
     owner = serializers.ReadOnlyField(source='owner.id')
     # pledges = PledgeSerializer(many=True, read_only=True)
+    total = serializers.ReadOnlyField()
 
     def create(self, validated_data):
         return Project.objects.create(**validated_data)
