@@ -50,7 +50,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 		if user.pk != instance.pk:
 			raise serializers.ValidationError({"authorize": "You dont have permission to change password for this user."})
 
-		instance.set_password(validated_data['password'])
+		instance.set_password(validated_data['new_password'])
 		instance.save()
 		return instance
 
